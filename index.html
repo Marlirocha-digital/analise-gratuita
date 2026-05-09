@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Análise Gratuita de 30 min | Marli Rocha</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* =============================================
+       RESET & BASE
+    ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:        #C9A848;
+      --gold-light:  #E2C97E;
+      --gold-dark:   #9A7D30;
+      --black:       #080808;
+      --dark:        #0F0F12;
+      --dark-2:      #15151A;
+      --dark-3:      #1C1C23;
+      --card:        rgba(255,255,255,0.04);
+      --card-border: rgba(201,168,72,0.18);
+      --white:       #FDFCFA;
+      --off-white:   #E8E3DA;
+      --muted:       #888899;
+      --font-serif:  'Cormorant Garamond', Georgia, serif;
+      --font-sans:   'Inter', system-ui, sans-serif;
+      --radius:      16px;
+      --shadow-gold: 0 0 60px rgba(201,168,72,0.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--dark);
+      color: var(--off-white);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* =============================================
+       UTILITIES
+    ============================================= */
+    .container {
+      width: 100%;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .gold { color: var(--gold); }
+    .serif { font-family: var(--font-serif); }
+
+    .gold-line {
+      width: 64px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      margin-bottom: 24px;
+    }
+
+    .gold-line.center { margin-left: auto; margin-right: auto; }
+
+    /* =============================================
+       SCROLL ANIMATIONS
+    ============================================= */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .fade-up.delay-1 { transition-delay: 0.15s; }
+    .fade-up.delay-2 { transition-delay: 0.3s; }
+    .fade-up.delay-3 { transition-delay: 0.45s; }
+    .fade-up.delay-4 { transition-delay: 0.6s; }
+
+    /* =============================================
+       URGENCY BAR
+    ============================================= */
+    .urgency-bar {
+      background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-dark));
+      color: var(--black);
+      text-align: center;
+      padding: 11px 16px;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .urgency-bar span {
+      display: inline-block;
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.75; }
+    }
+
+    /* =============================================
+       HERO
+    ============================================= */
+    .hero {
+      min-height: 100vh;
+      background: var(--black);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 70% 50%, rgba(201,168,72,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 0% 100%, rgba(201,168,72,0.05) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      padding: 120px 0 80px 64px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(201,168,72,0.1);
+      border: 1px solid rgba(201,168,72,0.3);
+      border-radius: 100px;
+      padding: 8px 20px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 32px;
+    }
+
+    .hero-tag::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      animation: blink 1.5s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .hero h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(36px, 4.5vw, 58px);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--white);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      color: var(--off-white);
+      line-height: 1.8;
+      margin-bottom: 40px;
+      max-width: 480px;
+      opacity: 0.85;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: var(--black);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 18px 36px;
+      border-radius: 100px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 40px rgba(201,168,72,0.35);
+      text-transform: uppercase;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 50px rgba(201,168,72,0.5);
+    }
+
+    .btn-primary svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    .hero-micro {
+      margin-top: 16px;
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero-micro::before {
+      content: '🔒';
+      font-size: 11px;
+    }
+
+    .hero-image {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      filter: brightness(0.88) contrast(1.05);
+    }
+
+    .hero-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, var(--black) 0%, transparent 30%),
+                  linear-gradient(0deg, var(--black) 0%, transparent 20%);
+    }
+
+    /* =============================================
+       DOR — ESPELHO
+    ============================================= */
+    .section-pain {
+      background: var(--dark-2);
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-pain::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-dark), transparent);
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(30px, 4vw, 48px);
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--white);
+      margin-bottom: 56px;
+    }
+
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .pain-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      transition: border-color 0.3s ease, background 0.3s ease;
+    }
+
+    .pain-card:hover {
+      border-color: rgba(201,168,72,0.4);
+      background: rgba(201,168,72,0.05);
+    }
+
+    .pain-icon {
+      width: 36px;
+      height: 36px;
+      background: rgba(201,168,72,0.12);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 16px;
+    }
+
+    .pain-card p {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--off-white);
+      opacity: 0.9;
+    }
+
+    /* =============================================
+       TRANSFORMAÇÃO
+    ============================================= */
+    .section-transform {
+      background: var(--dark);
+      padding: 100px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section-transform::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,168,72,0.06) 0%, transparent 70%);
+      top: -200px;
+      right: -200px;
+      pointer-events: none;
+    }
+
+    .transform-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .transform-items {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .transform-item {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .transform-number {
+      font-family: var(--font-serif);
+      font-size: 42px;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+      opacity: 0.4;
+      flex-shrink: 0;
+      width: 48px;
+    }
+
+    .transform-text h4 {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+
+    .transform-text p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .transform-visual {
+      position: relative;
+    }
+
+    .transform-card {
+      background: linear-gradient(135deg, rgba(201,168,72,0.08), rgba(201,168,72,0.02));
+      border: 1px solid rgba(201,168,72,0.2);
+      border-radius: 24px;
+      padding: 48px 40px;
+      text-align: center;
+    }
+
+    .transform-card-icon {
+      font-size: 48px;
+      margin-bottom: 24px;
+    }
+
+    .transform-card h3 {
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .transform-card p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+
+    .transform-stat {
+      display: inline-block;
+      font-family: var(--font-serif);
+      font-size: 56px;
+      font-weight: 600;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .transform-stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      margin-top: 8px;
+    }
+
+    /* =============================================
+       COMO FUNCIONA
+    ============================================= */
+    .section-steps {
+      background: var(--dark-2);
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .section-steps::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-dark), transparent);
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 64px;
+    }
+
+    .step-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 40px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .step-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(201,168,72,0.35);
+    }
+
+    .step-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .step-card:hover::before { opacity: 1; }
+
+    .step-num {
+      font-family: var(--font-serif);
+      font-size: 72px;
+      font-weight: 300;
+      color: rgba(201,168,72,0.15);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .step-card h4 {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .step-card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    /* =============================================
+       PROVA SOCIAL
+    ============================================= */
+    .section-proof {
+      background: var(--dark);
+      padding: 100px 0;
+    }
+
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 64px;
+    }
+
+    .proof-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 40px 32px;
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+
+    .proof-card:hover { transform: translateY(-4px); }
+
+    .proof-card.featured {
+      background: linear-gradient(135deg, rgba(201,168,72,0.1), rgba(201,168,72,0.03));
+      border-color: rgba(201,168,72,0.3);
+    }
+
+    .proof-quote {
+      font-family: var(--font-serif);
+      font-size: 56px;
+      color: var(--gold);
+      opacity: 0.3;
+      line-height: 0.8;
+      margin-bottom: 16px;
+    }
+
+    .proof-result {
+      font-family: var(--font-serif);
+      font-size: 44px;
+      font-weight: 600;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .proof-description {
+      font-size: 14px;
+      color: var(--off-white);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .proof-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .proof-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(201,168,72,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 18px;
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .proof-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .proof-role {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .proof-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+      border: 2px dashed rgba(201,168,72,0.2);
+      border-radius: var(--radius);
+      gap: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .proof-placeholder svg {
+      width: 32px;
+      height: 32px;
+      opacity: 0.4;
+    }
+
+    /* =============================================
+       SOBRE — MARLI
+    ============================================= */
+    .section-about {
+      background: var(--dark-2);
+      padding: 100px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section-about::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-dark), transparent);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about-image {
+      position: relative;
+    }
+
+    .about-image img {
+      width: 100%;
+      border-radius: 20px;
+      filter: grayscale(15%) brightness(0.95);
+    }
+
+    .about-image::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, var(--gold), transparent, var(--gold-dark));
+      z-index: -1;
+      opacity: 0.4;
+    }
+
+    .about-image-badge {
+      position: absolute;
+      bottom: 28px;
+      left: -20px;
+      background: var(--dark-3);
+      border: 1px solid rgba(201,168,72,0.3);
+      border-radius: 14px;
+      padding: 16px 20px;
+      backdrop-filter: blur(10px);
+    }
+
+    .about-image-badge .badge-num {
+      font-family: var(--font-serif);
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .about-image-badge .badge-text {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .about-content h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 400;
+      color: var(--white);
+      line-height: 1.25;
+      margin-bottom: 24px;
+    }
+
+    .about-content p {
+      font-size: 15px;
+      color: var(--off-white);
+      opacity: 0.85;
+      line-height: 1.9;
+      margin-bottom: 16px;
+    }
+
+    .about-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 32px;
+    }
+
+    .about-tag {
+      background: rgba(201,168,72,0.08);
+      border: 1px solid rgba(201,168,72,0.2);
+      border-radius: 100px;
+      padding: 7px 18px;
+      font-size: 12px;
+      color: var(--gold-light);
+      font-weight: 500;
+    }
+
+    /* =============================================
+       FAQ
+    ============================================= */
+    .section-faq {
+      background: var(--dark);
+      padding: 100px 0;
+    }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 780px;
+      margin: 64px auto 0;
+    }
+
+    .faq-item {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .faq-question {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 28px;
+      cursor: pointer;
+      gap: 16px;
+      transition: background 0.2s ease;
+    }
+
+    .faq-question:hover { background: rgba(201,168,72,0.04); }
+
+    .faq-question h4 {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--white);
+    }
+
+    .faq-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,72,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--gold);
+      font-size: 18px;
+      transition: transform 0.3s ease;
+    }
+
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+    }
+
+    .faq-item.open .faq-answer { max-height: 300px; }
+
+    .faq-answer p {
+      padding: 0 28px 24px;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    /* =============================================
+       CTA FINAL
+    ============================================= */
+    .section-cta {
+      background: var(--black);
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+      min-height: 640px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+    }
+
+    .cta-image {
+      height: 640px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .cta-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: brightness(0.8);
+    }
+
+    .cta-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 60%, var(--black) 100%),
+                  linear-gradient(0deg, var(--black) 0%, transparent 15%);
+    }
+
+    .cta-content {
+      padding: 80px 64px 80px 48px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .cta-content::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 50%, rgba(201,168,72,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-content h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(30px, 4vw, 50px);
+      font-weight: 400;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    .cta-content p {
+      font-size: 16px;
+      color: var(--off-white);
+      opacity: 0.8;
+      line-height: 1.8;
+      margin-bottom: 40px;
+    }
+
+    .cta-micro {
+      margin-top: 16px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* =============================================
+       FOOTER
+    ============================================= */
+    .footer {
+      background: var(--black);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 32px 24px;
+      text-align: center;
+    }
+
+    .footer p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .footer a {
+      color: var(--gold);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* =============================================
+       RESPONSIVE — MOBILE
+    ============================================= */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .hero-content {
+        padding: 100px 24px 60px;
+        order: 2;
+      }
+
+      .hero-image {
+        height: 60vw;
+        max-height: 420px;
+        order: 1;
+      }
+
+      .transform-grid { grid-template-columns: 1fr; gap: 48px; }
+      .transform-visual { order: -1; }
+
+      .steps-grid { grid-template-columns: 1fr; }
+
+      .proof-grid { grid-template-columns: 1fr; }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .about-image { max-width: 360px; margin: 0 auto; }
+      .about-image-badge { left: 12px; }
+
+      .section-cta {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .cta-image {
+        height: 320px;
+        order: -1;
+      }
+
+      .cta-image::after {
+        background: linear-gradient(0deg, var(--black) 0%, transparent 30%);
+      }
+
+      .cta-content { padding: 56px 24px; }
+
+      .hero-content { padding-left: 24px; }
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 32px; }
+      .section-title { font-size: 26px; }
+      .steps-grid, .proof-grid { gap: 16px; }
+      .btn-primary { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =============================================
+       URGENCY BAR
+  ============================================= -->
+  <div class="urgency-bar">
+    <span>⚡ Vagas limitadas em maio — Reserve sua Análise Gratuita de 30 min agora</span>
+  </div>
+
+  <!-- =============================================
+       HERO
+  ============================================= -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-tag fade-up">Análise Gratuita · 30 Minutos</div>
+
+      <h1 class="fade-up delay-1">
+        Você domina<br />sua área.<br />
+        Mas o seu tempo<br />está sendo <em>desperdiçado.</em>
+      </h1>
+
+      <p class="hero-sub fade-up delay-2">
+        Descubra em 30 minutos exatamente onde está o gargalo do seu negócio
+        — e o caminho para escalar sem aumentar sua carga de trabalho.
+      </p>
+
+      <a href="https://wa.me/5511950674172?text=Olá+Marli!+Vi+sua+página+e+quero+agendar+minha+Análise+Gratuita."
+         class="btn-primary fade-up delay-3" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.527 5.843L0 24l6.335-1.604A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-5.003-1.367l-.36-.213-3.76.952.996-3.647-.234-.374A9.762 9.762 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/>
+        </svg>
+        Quero minha Análise Gratuita
+      </a>
+
+      <p class="hero-micro fade-up delay-4">
+        Sem compromisso. Sem cartão de crédito. 100% gratuita.
+      </p>
+    </div>
+
+    <div class="hero-image">
+      <!--
+        FOTO HERO: Use a foto de corpo inteiro no lobby luxuoso
+        (top branco um ombro só + calça preta + scarpin preto)
+        Salve como hero.jpg na mesma pasta deste arquivo
+      -->
+      <img src="hero.jpg" alt="Marli Rocha — Consultora de IA e Estratégia Digital" />
+    </div>
+  </section>
+
+  <!-- =============================================
+       DOR — ESPELHO
+  ============================================= -->
+  <section class="section-pain">
+    <div class="container">
+      <div class="fade-up">
+        <p class="section-label">Você se reconhece?</p>
+        <h2 class="section-title">
+          Talvez seja exatamente<br />
+          o que você está vivendo agora.
+        </h2>
+      </div>
+
+      <div class="pain-grid">
+        <div class="pain-card fade-up">
+          <div class="pain-icon">⏱️</div>
+          <p>Você é referência na sua área, mas ainda vende só a sua hora — e a agenda já não comporta mais nenhum paciente.</p>
+        </div>
+        <div class="pain-card fade-up delay-1">
+          <div class="pain-icon">💸</div>
+          <p>Já investiu em agências e fez vários cursos de marketing, mas nada se encaixou na realidade do seu negócio.</p>
+        </div>
+        <div class="pain-card fade-up delay-2">
+          <div class="pain-icon">🗂️</div>
+          <p>Sabe que precisa criar um método ou um curso, mas não consegue organizar tudo o que sabe em algo estruturado.</p>
+        </div>
+        <div class="pain-card fade-up delay-3">
+          <div class="pain-icon">🔄</div>
+          <p>Seu negócio depende 100% de você. Se você para, tudo para — e isso te preocupa cada vez mais.</p>
+        </div>
+        <div class="pain-card fade-up delay-4">
+          <div class="pain-icon">🤖</div>
+          <p>Já ouviu falar de inteligência artificial, mas parece complicado demais para encaixar na sua rotina clínica.</p>
+        </div>
+        <div class="pain-card fade-up">
+          <div class="pain-icon">😔</div>
+          <p>Termina a semana exausta, com a sensação de que trabalhou muito, mas o negócio não avançou.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       TRANSFORMAÇÃO
+  ============================================= -->
+  <section class="section-transform">
+    <div class="container">
+      <div class="transform-grid">
+        <div class="fade-up">
+          <p class="section-label">O que você vai descobrir</p>
+          <h2 class="section-title" style="margin-bottom:48px;">
+            Em 30 minutos,<br />você sai com clareza<br />
+            <em style="font-style:italic; color:var(--gold);">e um caminho concreto.</em>
+          </h2>
+
+          <div class="transform-items">
+            <div class="transform-item">
+              <div class="transform-number">01</div>
+              <div class="transform-text">
+                <h4>Diagnóstico do seu gargalo real</h4>
+                <p>Identificamos juntas onde o seu tempo está sendo desperdiçado e o que está travando o crescimento.</p>
+              </div>
+            </div>
+            <div class="transform-item">
+              <div class="transform-number">02</div>
+              <div class="transform-text">
+                <h4>Clareza sobre o próximo passo</h4>
+                <p>Você sai sabendo exatamente o que fazer — sem achismo, sem mais cursos, sem mais teoria.</p>
+              </div>
+            </div>
+            <div class="transform-item">
+              <div class="transform-number">03</div>
+              <div class="transform-text">
+                <h4>Como a IA pode trabalhar por você</h4>
+                <p>Descubra onde a inteligência artificial pode assumir tarefas e liberar horas da sua semana hoje.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="transform-visual fade-up delay-2">
+          <div class="transform-card">
+            <div class="transform-card-icon">📊</div>
+            <h3>Resultado comprovado</h3>
+            <p>Uma profissional da saúde que passou pela consultoria gerou:</p>
+            <div class="transform-stat">R$ 65mil</div>
+            <div class="transform-stat-label">em vendas do curso estruturado com nosso método</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       COMO FUNCIONA
+  ============================================= -->
+  <section class="section-steps">
+    <div class="container">
+      <div class="fade-up" style="text-align:center;">
+        <p class="section-label" style="text-align:center;">Simples. Direto. Sem burocracia.</p>
+        <h2 class="section-title" style="text-align:center;">
+          Como funciona sua<br />Análise Gratuita
+        </h2>
+        <div class="gold-line center"></div>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card fade-up">
+          <div class="step-num">01</div>
+          <h4>Agende pelo WhatsApp</h4>
+          <p>Clique no botão, envie uma mensagem e escolha o melhor horário para você. Sem formulários longos, sem processos complicados.</p>
+        </div>
+        <div class="step-card fade-up delay-1">
+          <div class="step-num">02</div>
+          <h4>Fazemos a análise juntas</h4>
+          <p>Em 30 minutos por videochamada, mapeamos seu negócio, identificamos o gargalo e entendemos onde está o bloqueio.</p>
+        </div>
+        <div class="step-card fade-up delay-2">
+          <div class="step-num">03</div>
+          <h4>Você recebe seu diagnóstico</h4>
+          <p>Ao final, você tem clareza do problema e um caminho concreto — independente de contratar ou não a consultoria completa.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       PROVA SOCIAL
+  ============================================= -->
+  <section class="section-proof">
+    <div class="container">
+      <div class="fade-up" style="text-align:center;">
+        <p class="section-label" style="text-align:center;">Resultados reais</p>
+        <h2 class="section-title" style="text-align:center;">
+          O que acontece quando<br />o método é aplicado
+        </h2>
+        <div class="gold-line center"></div>
+      </div>
+
+      <div class="proof-grid">
+
+        <!-- DEPOIMENTO REAL -->
+        <div class="proof-card featured fade-up">
+          <div class="proof-quote">"</div>
+          <div class="proof-result">R$ 65.091,76</div>
+          <p class="proof-description">
+            Profissional da saúde que estruturou sua metodologia e lançou seu curso com o método da Marli. Resultado alcançado após organizar o conhecimento e aplicar IA no processo de venda e entrega.
+          </p>
+          <div class="proof-author">
+            <div class="proof-avatar">L</div>
+            <div>
+              <div class="proof-name">Dra. Laura P.</div>
+              <div class="proof-role">Profissional da saúde</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ESPAÇO DEPOIMENTO 2 -->
+        <div class="proof-card fade-up delay-1">
+          <div class="proof-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            <span>Depoimento em breve</span>
+          </div>
+        </div>
+
+        <!-- ESPAÇO DEPOIMENTO 3 -->
+        <div class="proof-card fade-up delay-2">
+          <div class="proof-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            <span>Depoimento em breve</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       SOBRE — MARLI
+  ============================================= -->
+  <section class="section-about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-image fade-up">
+          <!--
+            FOTO SOBRE: Use a foto com blazer navy, braços cruzados, fundo branco
+            Salve como sobre.jpg na mesma pasta deste arquivo
+          -->
+          <img src="sobre.jpg" alt="Marli Rocha" />
+          <div class="about-image-badge">
+            <div class="badge-num">+R$65k</div>
+            <div class="badge-text">gerados por cliente</div>
+          </div>
+        </div>
+
+        <div class="about-content fade-up delay-2">
+          <div class="gold-line"></div>
+          <p class="section-label">Quem é Marli Rocha</p>
+          <h2>
+            Especialista em transformar<br />
+            conhecimento em <em style="font-style:italic; color:var(--gold);">método e resultado.</em>
+          </h2>
+
+          <p>
+            Sou consultora de IA e Estratégia Digital com foco em profissionais da saúde que dominam sua área
+            mas ainda não estruturaram sua metodologia — ou que não estão usando a inteligência artificial
+            para escalar seu impacto.
+          </p>
+          <p>
+            Depois de mais de 20 anos empreendendo no mercado físico, vivi de perto a frustração de saber fazer,
+            mas não ter clareza de como organizar e crescer de forma inteligente. Quando encontrei a IA e o
+            marketing digital, tudo mudou. E hoje ajudo outras profissionais a fazerem o mesmo — sem precisar
+            começar do zero, sem depender de agências e sem vender mais horas.
+          </p>
+
+          <div class="about-tags">
+            <span class="about-tag">Estratégia Digital</span>
+            <span class="about-tag">Inteligência Artificial</span>
+            <span class="about-tag">Criação de Metodologia</span>
+            <span class="about-tag">Profissionais da Saúde</span>
+            <span class="about-tag">Escalabilidade</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       FAQ
+  ============================================= -->
+  <section class="section-faq">
+    <div class="container">
+      <div class="fade-up" style="text-align:center;">
+        <p class="section-label" style="text-align:center;">Dúvidas frequentes</p>
+        <h2 class="section-title" style="text-align:center;">Perguntas que<br />eu sei que você tem</h2>
+        <div class="gold-line center"></div>
+      </div>
+
+      <div class="faq-list">
+
+        <div class="faq-item fade-up">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h4>Essa análise é realmente gratuita? Tem algum compromisso?</h4>
+            <div class="faq-icon">+</div>
+          </div>
+          <div class="faq-answer">
+            <p>Sim, é 100% gratuita e sem compromisso. Você não precisa contratar nada para participar. O objetivo da análise é justamente te dar clareza — e se fizer sentido continuar juntas, conversamos sobre isso ao final da call. Sem pressão.</p>
+          </div>
+        </div>
+
+        <div class="faq-item fade-up delay-1">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h4>Eu não tenho tempo — essa call vai consumir meu dia?</h4>
+            <div class="faq-icon">+</div>
+          </div>
+          <div class="faq-answer">
+            <p>São exatamente 30 minutos, com hora marcada. Sem enrolação, sem apresentações longas. Você chega, a gente trabalha, você sai com clareza. É o tempo de uma consulta que você provavelmente já encaixa na agenda.</p>
+          </div>
+        </div>
+
+        <div class="faq-item fade-up delay-2">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h4>Já paguei agências e fiz cursos. Por que seria diferente?</h4>
+            <div class="faq-icon">+</div>
+          </div>
+          <div class="faq-answer">
+            <p>Porque agências entregam execução sem entender seu negócio. Cursos ensinam teoria que não se aplica à sua realidade clínica. Aqui, a gente olha para o SEU negócio, com o SEU contexto, e identifica o que especificamente está travando você — não uma fórmula genérica.</p>
+          </div>
+        </div>
+
+        <div class="faq-item fade-up delay-3">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h4>Isso é para mim se eu ainda não tenho um curso estruturado?</h4>
+            <div class="faq-icon">+</div>
+          </div>
+          <div class="faq-answer">
+            <p>Sim — especialmente para você. A análise serve tanto para quem quer começar a monetizar seu conhecimento quanto para quem já tem algo rodando mas não está tendo o resultado esperado. O ponto de partida não importa; o que importa é onde você quer chegar.</p>
+          </div>
+        </div>
+
+        <div class="faq-item fade-up delay-4">
+          <div class="faq-question" onclick="toggleFaq(this)">
+            <h4>O que acontece depois da análise gratuita?</h4>
+            <div class="faq-icon">+</div>
+          </div>
+          <div class="faq-answer">
+            <p>Você recebe um diagnóstico claro e um caminho de ação — isso já tem valor por si só. Se fizer sentido, apresento como a consultoria completa funciona: criação da sua metodologia com uso de IA para acelerar o processo. Mas a decisão é sempre sua, no seu tempo.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       CTA FINAL
+  ============================================= -->
+  <section class="section-cta">
+    <div class="cta-image">
+      <!--
+        FOTO CTA FINAL: Use a foto com pôr do sol e skyline da cidade
+        (top branco um ombro, encostada na mesa, luz dourada)
+        Salve como cta.jpg na mesma pasta deste arquivo
+      -->
+      <img src="cta.jpg" alt="Marli Rocha" />
+    </div>
+
+    <div class="cta-content">
+      <div class="gold-line fade-up"></div>
+      <h2 class="fade-up delay-1">
+        Chega de saber o<br />que precisa fazer<br />
+        sem conseguir <em style="font-style:italic; color:var(--gold);">colocar em prática.</em>
+      </h2>
+      <p class="fade-up delay-2">
+        Reserve sua Análise Gratuita de 30 minutos agora.<br />
+        Uma conversa pode mudar a direção do seu negócio.
+      </p>
+
+      <a href="https://wa.me/5511950674172?text=Olá+Marli!+Vi+sua+página+e+quero+agendar+minha+Análise+Gratuita."
+         class="btn-primary fade-up delay-3" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.118 1.527 5.843L0 24l6.335-1.604A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.8 9.8 0 01-5.003-1.367l-.36-.213-3.76.952.996-3.647-.234-.374A9.762 9.762 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/>
+        </svg>
+        Agendar minha Análise Gratuita
+      </a>
+
+      <p class="cta-micro fade-up delay-4">
+        🔒 Seus dados são protegidos. Nenhuma cobrança. Sem spam.
+      </p>
+    </div>
+  </section>
+
+  <!-- =============================================
+       FOOTER
+  ============================================= -->
+  <footer class="footer">
+    <p>
+      © 2026 Marli Rocha · Consultoria de IA e Estratégia Digital<br />
+      <a href="#">Política de Privacidade</a> · Ao agendar, você concorda com nossos termos de uso.
+    </p>
+  </footer>
+
+  <!-- =============================================
+       JAVASCRIPT
+  ============================================= -->
+  <script>
+    // Scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // FAQ toggle
+    function toggleFaq(btn) {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    }
+  </script>
+
+</body>
+</html>
