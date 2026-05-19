@@ -210,6 +210,15 @@
       <div class="sidebar-tag">Consultoria</div>
       <div class="sidebar-title">Briefings <em>Recebidos</em></div>
       <div class="sidebar-count" id="count">Carregando...</div>
+      <a href="briefing-template.html" target="_blank" style="
+        display:block; margin:12px 16px 4px; padding:10px 16px;
+        background:var(--gold); color:var(--bg); text-align:center;
+        font-size:0.75rem; font-weight:600; letter-spacing:0.1em;
+        text-transform:uppercase; text-decoration:none; border-radius:6px;
+        transition:opacity 0.2s;
+      " onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+        + Novo Briefing
+      </a>
     </div>
     <div class="search-box">
       <input type="text" id="search" placeholder="Buscar por nome do projeto..." oninput="filtrar()">
@@ -237,15 +246,38 @@
   let ativoId = null;
 
   async function carregar() {
-    const res = await fetch(SUPABASE_URL + '/rest/v1/briefings?select=*&order=created_at.desc', {
-      headers: {
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+    const list = document.getElementById('list');
+    const count = document.getElementById('count');
+    list.innerHTML = '<p style="padding:24px 16px; font-size:0.82rem; color:var(--warm-gray); text-align:center;">Carregando...</p>';
+
+    try {
+      const res = await fetch(SUPABASE_URL + '/rest/v1/briefings?select=*&order=created_at.desc', {
+        headers: {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+        }
+      });
+
+      const data = await res.json();
+
+      if (!Array.isArray(data)) {
+        // Supabase retornou erro (tabela não existe ou permissão bloqueada)
+        count.textContent = 'Erro de conexão';
+        list.innerHTML = `<div style="padding:24px 16px; font-size:0.82rem; color:#EF4444; text-align:center;">
+          <p style="margin-bottom:8px;">⚠️ Não foi possível carregar os briefings.</p>
+          <p style="color:var(--warm-gray); font-size:0.75rem;">${data?.message || 'Verifique a conexão com o Supabase.'}</p>
+        </div>`;
+        return;
       }
-    });
-    todos = await res.json();
-    filtrados = todos;
-    renderLista();
+
+      todos = data;
+      filtrados = todos;
+      renderLista();
+
+    } catch (err) {
+      count.textContent = 'Sem conexão';
+      list.innerHTML = '<p style="padding:24px 16px; font-size:0.82rem; color:#EF4444; text-align:center;">⚠️ Falha na conexão. Verifique sua internet.</p>';
+    }
   }
 
   function filtrar() {
@@ -262,7 +294,10 @@
     count.textContent = visiveis.length + ' briefing' + (visiveis.length !== 1 ? 's' : '') + ' recebido' + (visiveis.length !== 1 ? 's' : '');
 
     if (visiveis.length === 0) {
-      list.innerHTML = '<p style="padding:24px 16px; font-size:0.82rem; color:var(--warm-gray); text-align:center;">Nenhum briefing encontrado.</p>';
+      list.innerHTML = `<div style="padding:24px 16px; text-align:center;">
+        <p style="font-size:0.82rem; color:var(--warm-gray); margin-bottom:12px;">Nenhum briefing salvo ainda.</p>
+        <a href="briefing-template.html" target="_blank" style="font-size:0.75rem; color:var(--gold); text-decoration:underline;">Criar primeiro briefing →</a>
+      </div>`;
       return;
     }
 
