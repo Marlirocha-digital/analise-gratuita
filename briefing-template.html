@@ -3,14 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Briefing Completo &mdash; Impulso Digital</title>
+<title>Briefing Completo — Impulso Digital</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --gold:         #C9A84C;
     --gold-light:   #E8D5A3;
-    --gold-dim:     rgba(201,168,76,0.12);
-    --sage:         #7B9E87;
     --bg:           #0F0D08;
     --dark:         #1A1610;
     --mid:          #262016;
@@ -29,7 +27,7 @@
     line-height: 1.6;
     max-width: 900px;
     margin: 0 auto;
-    padding: 0 32px 64px;
+    padding: 48px 32px;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -48,54 +46,8 @@
     .logo-wrap { background: transparent !important; }
   }
 
-  /* Status bar */
-  .status-bar {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: var(--dark);
-    border-bottom: 1px solid var(--border);
-    padding: 10px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin: 0 -32px;
-    padding: 10px 32px;
-  }
-  .status-bar.no-print { }
-  .status-left { display: flex; align-items: center; gap: 10px; }
-  .status-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--warm-gray); flex-shrink: 0;
-    transition: background 0.3s;
-  }
-  .status-dot.saving { background: var(--gold); animation: pulse 1s infinite; }
-  .status-dot.saved  { background: var(--sage); }
-  .status-dot.error  { background: #EF4444; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-  .status-text { font-size: 0.78rem; color: var(--warm-gray); font-weight: 300; }
-
-  .status-right { display: flex; align-items: center; gap: 8px; }
-  .link-box {
-    display: flex; align-items: center; gap: 6px;
-    background: var(--mid); border: 1px solid var(--border);
-    border-radius: 6px; padding: 6px 12px;
-    font-size: 0.75rem; color: var(--warm-gray);
-    max-width: 260px; overflow: hidden;
-  }
-  .link-box span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: monospace; }
-  .btn-copy-link {
-    padding: 6px 14px; font-size: 0.72rem; font-weight: 600;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    background: var(--gold); color: var(--bg);
-    border: none; border-radius: 5px; cursor: pointer;
-    transition: opacity 0.2s; white-space: nowrap; flex-shrink: 0;
-  }
-  .btn-copy-link:hover { opacity: 0.85; }
-
   /* Header */
-  .header { margin-bottom: 48px; padding: 48px 0 32px; border-bottom: 1px solid var(--border); text-align: center; }
+  .header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); text-align: center; }
   .logo-wrap {
     display: inline-block;
     background: var(--cream);
@@ -224,33 +176,10 @@
   .level-option input[type="radio"] { accent-color: var(--gold); width: 16px; height: 16px; }
   .level-option .lo-label { font-size: 0.85rem; font-weight: 500; color: var(--cream); }
   .level-option .lo-desc { font-size: 0.8rem; color: var(--warm-gray); font-weight: 300; margin-left: auto; }
-
-  /* Toast */
-  #toast {
-    position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%);
-    padding: 14px 28px; font-family: var(--sans); font-size: 0.85rem; font-weight: 500;
-    z-index: 9999; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.4);
-    white-space: nowrap; display: none;
-  }
 </style>
 </head>
 <body>
 
-<!-- STATUS BAR -->
-<div class="status-bar no-print">
-  <div class="status-left">
-    <div class="status-dot" id="statusDot"></div>
-    <span class="status-text" id="statusText">Carregando...</span>
-  </div>
-  <div class="status-right">
-    <div class="link-box">
-      <span id="linkDisplay">—</span>
-    </div>
-    <button class="btn-copy-link" onclick="copiarLink()">Copiar Link</button>
-  </div>
-</div>
-
-<!-- HEADER -->
 <div class="header">
   <div class="logo-wrap">
     <img src="logo-impulso.jpeg" alt="Impulso Digital">
@@ -258,17 +187,17 @@
   <div class="header-tag">Template de Briefing</div>
   <h1>Briefing <em>Completo</em></h1>
   <div class="header-line"></div>
-  <p>Preencha os campos abaixo. As informa&ccedil;&otilde;es s&atilde;o salvas automaticamente &mdash; voc&ecirc; pode fechar e voltar pelo mesmo link.</p>
+  <p>Preencha cada campo com as informa&ccedil;&otilde;es do seu projeto. Ao final, clique em &ldquo;Salvar no Supabase&rdquo; para guardar e visualizar no painel.</p>
 </div>
 
 <!-- 1. VISAO GERAL -->
 <div class="section">
   <div class="section-tag">01 &mdash; Vis&atilde;o Geral</div>
   <h2>Sobre o <em>projeto</em></h2>
-  <div class="field"><div class="field-label">Nome do projeto / cliente</div><input class="field-input" data-field="nome_projeto" type="text" placeholder="Ex: Mentoria de Marketing Digital"></div>
-  <div class="field"><div class="field-label">O que &eacute;</div><input class="field-input" data-field="o_que_e" type="text" placeholder="Descreva em 1 frase o que &eacute; o seu produto/servi&ccedil;o"></div>
-  <div class="field"><div class="field-label">Resultado que entrega</div><input class="field-input" data-field="resultado" type="text" placeholder="Qual transforma&ccedil;&atilde;o o cliente tem?"></div>
-  <div class="field"><div class="field-label">Formato</div><input class="field-input" data-field="formato" type="text" placeholder="Curso, mentoria, servi&ccedil;o, produto digital, SaaS..."></div>
+  <div class="field"><div class="field-label">Nome do projeto</div><input class="field-input" type="text" placeholder="Ex: Mentoria de Marketing Digital"></div>
+  <div class="field"><div class="field-label">O que &eacute;</div><input class="field-input" type="text" placeholder="Descreva em 1 frase o que &eacute; o seu produto/servi&ccedil;o"></div>
+  <div class="field"><div class="field-label">Resultado que entrega</div><input class="field-input" type="text" placeholder="Qual transforma&ccedil;&atilde;o o cliente tem?"></div>
+  <div class="field"><div class="field-label">Formato</div><input class="field-input" type="text" placeholder="Curso, mentoria, servi&ccedil;o, produto digital, SaaS..."></div>
 </div>
 
 <div class="divider"></div>
@@ -278,14 +207,14 @@
   <div class="section-tag">02 &mdash; P&uacute;blico-Alvo</div>
   <h2>Quem &eacute; o <em>cliente ideal</em></h2>
   <div class="field-grid">
-    <div class="field"><div class="field-label">Cliente ideal</div><input class="field-input" data-field="cliente_ideal" type="text" placeholder="Quem &eacute;? (profiss&atilde;o, idade, situa&ccedil;&atilde;o)"></div>
-    <div class="field"><div class="field-label">Profiss&atilde;o / perfil</div><input class="field-input" data-field="profissao" type="text" placeholder="O que faz no dia a dia?"></div>
+    <div class="field"><div class="field-label">Cliente ideal</div><input class="field-input" type="text" placeholder="Quem &eacute;? (profiss&atilde;o, idade, situa&ccedil;&atilde;o)"></div>
+    <div class="field"><div class="field-label">Profiss&atilde;o / perfil</div><input class="field-input" type="text" placeholder="O que faz no dia a dia?"></div>
   </div>
-  <div class="field"><div class="field-label">Dor principal</div><textarea class="field-textarea" data-field="dor_principal" placeholder="Qual o maior problema que sente hoje?"></textarea></div>
-  <div class="field"><div class="field-label">Desejo mais forte</div><textarea class="field-textarea" data-field="desejo_forte" placeholder="O que mais quer conquistar?"></textarea></div>
+  <div class="field"><div class="field-label">Dor principal</div><textarea class="field-textarea" placeholder="Qual o maior problema que sente hoje?"></textarea></div>
+  <div class="field"><div class="field-label">Desejo mais forte</div><textarea class="field-textarea" placeholder="O que mais quer conquistar?"></textarea></div>
   <div class="field-grid">
-    <div class="field"><div class="field-label">Situa&ccedil;&atilde;o atual</div><textarea class="field-textarea" data-field="situacao_atual" placeholder="Onde est&aacute; agora?"></textarea></div>
-    <div class="field"><div class="field-label">Situa&ccedil;&atilde;o desejada</div><textarea class="field-textarea" data-field="situacao_desejada" placeholder="Onde quer chegar?"></textarea></div>
+    <div class="field"><div class="field-label">Situa&ccedil;&atilde;o atual</div><textarea class="field-textarea" placeholder="Onde est&aacute; agora?"></textarea></div>
+    <div class="field"><div class="field-label">Situa&ccedil;&atilde;o desejada</div><textarea class="field-textarea" placeholder="Onde quer chegar?"></textarea></div>
   </div>
 </div>
 
@@ -295,13 +224,13 @@
 <div class="section">
   <div class="section-tag">03 &mdash; Oferta</div>
   <h2>O que voc&ecirc; <em>vende</em></h2>
-  <div class="field"><div class="field-label">Nome da oferta</div><input class="field-input" data-field="nome_oferta" type="text" placeholder="Nome do produto/servi&ccedil;o"></div>
+  <div class="field"><div class="field-label">Nome da oferta</div><input class="field-input" type="text" placeholder="Nome do produto/servi&ccedil;o"></div>
   <div class="field-grid">
-    <div class="field"><div class="field-label">Pre&ccedil;o</div><input class="field-input" data-field="preco" type="text" placeholder="R$ ___"></div>
-    <div class="field"><div class="field-label">Garantia</div><input class="field-input" data-field="garantia" type="text" placeholder="___ dias / sem garantia"></div>
+    <div class="field"><div class="field-label">Pre&ccedil;o</div><input class="field-input" type="text" placeholder="R$ ___"></div>
+    <div class="field"><div class="field-label">Garantia</div><input class="field-input" type="text" placeholder="___ dias / sem garantia"></div>
   </div>
-  <div class="field"><div class="field-label">O que est&aacute; incluso</div><textarea class="field-textarea" data-field="o_que_incluso" placeholder="Liste tudo que o cliente recebe"></textarea></div>
-  <div class="field"><div class="field-label">B&ocirc;nus diferencial</div><input class="field-input" data-field="bonus_diferencial" type="text" placeholder="Algo extra que s&oacute; voc&ecirc; oferece"></div>
+  <div class="field"><div class="field-label">O que est&aacute; incluso</div><textarea class="field-textarea" placeholder="Liste tudo que o cliente recebe"></textarea></div>
+  <div class="field"><div class="field-label">B&ocirc;nus diferencial</div><input class="field-input" type="text" placeholder="Algo extra que s&oacute; voc&ecirc; oferece"></div>
 </div>
 
 <div class="divider"></div>
@@ -310,14 +239,14 @@
 <div class="section">
   <div class="section-tag">04 &mdash; Obje&ccedil;&otilde;es</div>
   <h2>Por que <em>n&atilde;o</em> comprariam</h2>
-  <table class="obj-table" id="tblObj">
+  <table class="obj-table">
     <thead><tr><th>#</th><th>Obje&ccedil;&atilde;o</th><th>Sua resposta</th><th>Prova</th></tr></thead>
     <tbody>
-      <tr><td>1</td><td><input type="text" data-field="obj_1_obj" placeholder="Obje&ccedil;&atilde;o mais comum"></td><td><input type="text" data-field="obj_1_resp" placeholder="Como voc&ecirc; responde"></td><td><input type="text" data-field="obj_1_prova" placeholder="Que prova sustenta"></td></tr>
-      <tr><td>2</td><td><input type="text" data-field="obj_2_obj" placeholder=""></td><td><input type="text" data-field="obj_2_resp" placeholder=""></td><td><input type="text" data-field="obj_2_prova" placeholder=""></td></tr>
-      <tr><td>3</td><td><input type="text" data-field="obj_3_obj" placeholder=""></td><td><input type="text" data-field="obj_3_resp" placeholder=""></td><td><input type="text" data-field="obj_3_prova" placeholder=""></td></tr>
-      <tr><td>4</td><td><input type="text" data-field="obj_4_obj" placeholder=""></td><td><input type="text" data-field="obj_4_resp" placeholder=""></td><td><input type="text" data-field="obj_4_prova" placeholder=""></td></tr>
-      <tr><td>5</td><td><input type="text" data-field="obj_5_obj" placeholder=""></td><td><input type="text" data-field="obj_5_resp" placeholder=""></td><td><input type="text" data-field="obj_5_prova" placeholder=""></td></tr>
+      <tr><td>1</td><td><input type="text" placeholder="Obje&ccedil;&atilde;o mais comum"></td><td><input type="text" placeholder="Como voc&ecirc; responde"></td><td><input type="text" placeholder="Que prova sustenta"></td></tr>
+      <tr><td>2</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+      <tr><td>3</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+      <tr><td>4</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+      <tr><td>5</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
     </tbody>
   </table>
 </div>
@@ -328,12 +257,12 @@
 <div class="section">
   <div class="section-tag">05 &mdash; Concorrentes</div>
   <h2>Quem mais <em>resolve</em> esse problema</h2>
-  <table class="obj-table" id="tblConc">
+  <table class="obj-table">
     <thead><tr><th>#</th><th>Concorrente</th><th>O que faz bem</th><th>O que falta</th><th>Seu diferencial</th></tr></thead>
     <tbody>
-      <tr><td>1</td><td><input type="text" data-field="conc_1_nome" placeholder=""></td><td><input type="text" data-field="conc_1_bem" placeholder=""></td><td><input type="text" data-field="conc_1_falta" placeholder=""></td><td><input type="text" data-field="conc_1_dif" placeholder=""></td></tr>
-      <tr><td>2</td><td><input type="text" data-field="conc_2_nome" placeholder=""></td><td><input type="text" data-field="conc_2_bem" placeholder=""></td><td><input type="text" data-field="conc_2_falta" placeholder=""></td><td><input type="text" data-field="conc_2_dif" placeholder=""></td></tr>
-      <tr><td>3</td><td><input type="text" data-field="conc_3_nome" placeholder=""></td><td><input type="text" data-field="conc_3_bem" placeholder=""></td><td><input type="text" data-field="conc_3_falta" placeholder=""></td><td><input type="text" data-field="conc_3_dif" placeholder=""></td></tr>
+      <tr><td>1</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+      <tr><td>2</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+      <tr><td>3</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
     </tbody>
   </table>
 </div>
@@ -344,11 +273,11 @@
 <div class="section">
   <div class="section-tag">06 &mdash; &Acirc;ngulos de Campanha</div>
   <h2>Formas de <em>abordar</em> o p&uacute;blico</h2>
-  <div class="field"><div class="field-label">&Acirc;ngulo de Dor</div><input class="field-input" data-field="angulo_dor" type="text" placeholder="Explora o problema. Ex: 'Voc&ecirc; est&aacute; cansado de...'"></div>
-  <div class="field"><div class="field-label">&Acirc;ngulo de Desejo</div><input class="field-input" data-field="angulo_desejo" type="text" placeholder="Pinta o futuro. Ex: 'Imagine quando...'"></div>
-  <div class="field"><div class="field-label">&Acirc;ngulo de Prova</div><input class="field-input" data-field="angulo_prova" type="text" placeholder="Mostra resultados. Ex: 'Fulano conseguiu...'"></div>
-  <div class="field"><div class="field-label">&Acirc;ngulo de Urg&ecirc;ncia</div><input class="field-input" data-field="angulo_urgencia" type="text" placeholder="Por que agora. Ex: 'O mercado est&aacute; mudando...'"></div>
-  <div class="field"><div class="field-label">&Acirc;ngulo de Curiosidade</div><input class="field-input" data-field="angulo_curiosidade" type="text" placeholder="Mecanismo &uacute;nico. Ex: 'O m&eacute;todo que...'"></div>
+  <div class="field"><div class="field-label">&Acirc;ngulo de Dor</div><input class="field-input" type="text" placeholder="Explora o problema. Ex: 'Voc&ecirc; est&aacute; cansado de...'"></div>
+  <div class="field"><div class="field-label">&Acirc;ngulo de Desejo</div><input class="field-input" type="text" placeholder="Pinta o futuro. Ex: 'Imagine quando...'"></div>
+  <div class="field"><div class="field-label">&Acirc;ngulo de Prova</div><input class="field-input" type="text" placeholder="Mostra resultados. Ex: 'Fulano conseguiu...'"></div>
+  <div class="field"><div class="field-label">&Acirc;ngulo de Urg&ecirc;ncia</div><input class="field-input" type="text" placeholder="Por que agora. Ex: 'O mercado est&aacute; mudando...'"></div>
+  <div class="field"><div class="field-label">&Acirc;ngulo de Curiosidade</div><input class="field-input" type="text" placeholder="Mecanismo &uacute;nico. Ex: 'O m&eacute;todo que...'"></div>
 </div>
 
 <div class="divider"></div>
@@ -357,10 +286,10 @@
 <div class="section">
   <div class="section-tag">07 &mdash; Promessas</div>
   <h2>O que voc&ecirc; <em>promete</em></h2>
-  <div class="field"><div class="field-label">Promessa central</div><textarea class="field-textarea" data-field="promessa_central" placeholder="A promessa principal da sua oferta"></textarea></div>
-  <div class="field"><div class="field-label">Sub-promessa 1</div><input class="field-input" data-field="subpromessa_1" type="text" placeholder="Benef&iacute;cio espec&iacute;fico"></div>
-  <div class="field"><div class="field-label">Sub-promessa 2</div><input class="field-input" data-field="subpromessa_2" type="text" placeholder="Benef&iacute;cio espec&iacute;fico"></div>
-  <div class="field"><div class="field-label">Sub-promessa 3</div><input class="field-input" data-field="subpromessa_3" type="text" placeholder="Benef&iacute;cio espec&iacute;fico"></div>
+  <div class="field"><div class="field-label">Promessa central</div><textarea class="field-textarea" placeholder="A promessa principal da sua oferta"></textarea></div>
+  <div class="field"><div class="field-label">Sub-promessa 1</div><input class="field-input" type="text" placeholder="Benef&iacute;cio espec&iacute;fico"></div>
+  <div class="field"><div class="field-label">Sub-promessa 2</div><input class="field-input" type="text" placeholder="Benef&iacute;cio espec&iacute;fico"></div>
+  <div class="field"><div class="field-label">Sub-promessa 3</div><input class="field-input" type="text" placeholder="Benef&iacute;cio espec&iacute;fico"></div>
 </div>
 
 <div class="divider"></div>
@@ -369,9 +298,9 @@
 <div class="section">
   <div class="section-tag">08 &mdash; Provas</div>
   <h2>Por que devem <em>acreditar</em></h2>
-  <div class="field"><div class="field-label">Depoimentos de clientes</div><textarea class="field-textarea" data-field="depoimentos" placeholder="Liste depoimentos reais (ou marque 'a preencher')"></textarea></div>
-  <div class="field"><div class="field-label">Resultados num&eacute;ricos</div><input class="field-input" data-field="resultados_numericos" type="text" placeholder="N&uacute;meros concretos que provam"></div>
-  <div class="field"><div class="field-label">Credenciais do expert</div><input class="field-input" data-field="credenciais" type="text" placeholder="Sua experi&ecirc;ncia, forma&ccedil;&atilde;o, resultados"></div>
+  <div class="field"><div class="field-label">Depoimentos de clientes</div><textarea class="field-textarea" placeholder="Liste depoimentos reais (ou marque 'a preencher')"></textarea></div>
+  <div class="field"><div class="field-label">Resultados num&eacute;ricos</div><input class="field-input" type="text" placeholder="N&uacute;meros concretos que provam"></div>
+  <div class="field"><div class="field-label">Credenciais do expert</div><input class="field-input" type="text" placeholder="Sua experi&ecirc;ncia, forma&ccedil;&atilde;o, resultados"></div>
 </div>
 
 <div class="divider"></div>
@@ -380,9 +309,9 @@
 <div class="section">
   <div class="section-tag">09 &mdash; Mecanismo &Uacute;nico</div>
   <h2>O m&eacute;todo que <em>faz funcionar</em></h2>
-  <div class="field"><div class="field-label">Nome do m&eacute;todo</div><input class="field-input" data-field="nome_metodo" type="text" placeholder="Como se chama o seu sistema/framework"></div>
-  <div class="field"><div class="field-label">Por que funciona</div><textarea class="field-textarea" data-field="por_que_funciona" placeholder="Explique a l&oacute;gica por tr&aacute;s"></textarea></div>
-  <div class="field"><div class="field-label">Diferencial do m&eacute;todo</div><input class="field-input" data-field="diferencial_metodo" type="text" placeholder="O que tem de diferente dos outros"></div>
+  <div class="field"><div class="field-label">Nome do m&eacute;todo</div><input class="field-input" type="text" placeholder="Como se chama o seu sistema/framework"></div>
+  <div class="field"><div class="field-label">Por que funciona</div><textarea class="field-textarea" placeholder="Explique a l&oacute;gica por tr&aacute;s"></textarea></div>
+  <div class="field"><div class="field-label">Diferencial</div><input class="field-input" type="text" placeholder="O que tem de diferente dos outros"></div>
 </div>
 
 <div class="divider"></div>
@@ -407,11 +336,11 @@
 <div class="section">
   <div class="section-tag">11 &mdash; Tom de Comunica&ccedil;&atilde;o</div>
   <h2>Como a marca <em>fala</em></h2>
-  <div class="scale-row"><span class="scale-label">Formal &harr; Casual</span><div class="scale-track" data-scale="1"><div class="scale-fill" style="width:50%"></div></div><input class="scale-input" type="number" min="0" max="100" value="50" data-scale-input="1" data-field="tom_1"></div>
-  <div class="scale-row"><span class="scale-label">S&eacute;rio &harr; Divertido</span><div class="scale-track" data-scale="2"><div class="scale-fill" style="width:50%"></div></div><input class="scale-input" type="number" min="0" max="100" value="50" data-scale-input="2" data-field="tom_2"></div>
-  <div class="scale-row"><span class="scale-label">T&eacute;cnico &harr; Acess&iacute;vel</span><div class="scale-track" data-scale="3"><div class="scale-fill" style="width:50%"></div></div><input class="scale-input" type="number" min="0" max="100" value="50" data-scale-input="3" data-field="tom_3"></div>
-  <div class="scale-row"><span class="scale-label">Autorit&aacute;rio &harr; Amig&aacute;vel</span><div class="scale-track" data-scale="4"><div class="scale-fill" style="width:50%"></div></div><input class="scale-input" type="number" min="0" max="100" value="50" data-scale-input="4" data-field="tom_4"></div>
-  <div class="field" style="margin-top:16px;"><div class="field-label">Persona da marca</div><input class="field-input" data-field="persona_marca" type="text" placeholder="Mentor, amigo, autoridade, parceiro..."></div>
+  <div class="scale-row"><span class="scale-label">Formal &harr; Casual</span><div class="scale-track" data-scale="1"><div class="scale-fill" style="width:50%"></div></div><input class="scale-input" type="number" min="0" max="100" value="50" data-scale-input="1"></div>
+  <div class="scale-row"><span class="scale-label">S&eacute;rio &harr; Divertido</span><div class="scale-track" data-scale="2"><div class="scale-fill" style="width:50%"></div></div><input class="scale-input" type="number" min="0" max="100" value="50" data-scale-input="2"></div>
+  <div class="scale-row"><span class="scale-label">T&eacute;cnico &harr; Acess&iacute;vel</span><div class="scale-track" data-scale="3"><div class="scale-fill" style="width:50%"></div></div><input class="scale-input" type="number" min="0" max="100" value="50" data-scale-input="3"></div>
+  <div class="scale-row"><span class="scale-label">Autorit&aacute;rio &harr; Amig&aacute;vel</span><div class="scale-track" data-scale="4"><div class="scale-fill" style="width:50%"></div></div><input class="scale-input" type="number" min="0" max="100" value="50" data-scale-input="4"></div>
+  <div class="field" style="margin-top:16px;"><div class="field-label">Persona da marca</div><input class="field-input" type="text" placeholder="Mentor, amigo, autoridade, parceiro..."></div>
 </div>
 
 <div class="divider"></div>
@@ -421,23 +350,24 @@
   <div class="section-tag">12 &mdash; Restri&ccedil;&otilde;es e Contexto</div>
   <h2>Limites e <em>prazos</em></h2>
   <div class="field-grid">
-    <div class="field"><div class="field-label">Prazo de lan&ccedil;amento</div><input class="field-input" data-field="prazo" type="text" placeholder="Data ou 'sem prazo definido'"></div>
-    <div class="field"><div class="field-label">Or&ccedil;amento</div><input class="field-input" data-field="orcamento" type="text" placeholder="R$ ___ para tr&aacute;fego / produ&ccedil;&atilde;o"></div>
+    <div class="field"><div class="field-label">Prazo de lan&ccedil;amento</div><input class="field-input" type="text" placeholder="Data ou 'sem prazo definido'"></div>
+    <div class="field"><div class="field-label">Or&ccedil;amento</div><input class="field-input" type="text" placeholder="R$ ___ para tr&aacute;fego / produ&ccedil;&atilde;o"></div>
   </div>
-  <div class="field"><div class="field-label">Canais priorit&aacute;rios</div><input class="field-input" data-field="canais" type="text" placeholder="Instagram, YouTube, email, WhatsApp..."></div>
-  <div class="field"><div class="field-label">Restri&ccedil;&otilde;es do nicho</div><input class="field-input" data-field="restricoes_nicho" type="text" placeholder="Regula&ccedil;&atilde;o, compliance, limita&ccedil;&otilde;es..."></div>
+  <div class="field"><div class="field-label">Canais priorit&aacute;rios</div><input class="field-input" type="text" placeholder="Instagram, YouTube, email, WhatsApp..."></div>
+  <div class="field"><div class="field-label">Restri&ccedil;&otilde;es do nicho</div><input class="field-input" type="text" placeholder="Regula&ccedil;&atilde;o, compliance, limita&ccedil;&otilde;es..."></div>
 </div>
 
 <div class="divider"></div>
 
 <!-- ACTIONS -->
 <div style="text-align:center; padding:32px 0;" class="no-print">
-  <p style="font-size:0.95rem; color:rgba(250,247,240,0.7); font-weight:400; margin-bottom:20px;">As informa&ccedil;&otilde;es s&atilde;o salvas automaticamente. Use os bot&otilde;es abaixo para exportar.</p>
+  <p style="font-size:0.95rem; color:rgba(250,247,240,0.7); font-weight:400; margin-bottom:20px;">Preencheu tudo? Salve para visualizar no painel da Impulso Digital.</p>
   <div class="btn-bar">
-    <button class="btn btn-primary" id="btnSalvar" onclick="salvarAgora()">Salvar Agora</button>
-    <button class="btn btn-mid" onclick="window.print()">Exportar PDF</button>
-    <button class="btn btn-outline" onclick="copyAsText()">Copiar como Texto</button>
+    <button id="btn-salvar" class="btn btn-primary" onclick="salvarNoSupabase()">Salvar no Supabase</button>
+    <button class="btn btn-mid" onclick="window.print()">Salvar como PDF</button>
+    <button class="btn btn-outline btn-copy" onclick="copyAsText()">Copiar como Texto</button>
   </div>
+  <p style="font-size:0.75rem; color:var(--warm-gray); margin-top:16px; font-weight:300;">No di&aacute;logo de impress&atilde;o, selecione &ldquo;Salvar como PDF&rdquo; como destino.</p>
 </div>
 
 <div style="text-align:center; padding:24px 0; border-top:1px solid var(--border);">
@@ -445,242 +375,55 @@
   <p style="font-size:0.75rem; color:var(--warm-gray); margin-top:4px;">marlirocha.com.br &mdash; Template de Briefing</p>
 </div>
 
-<div id="toast"></div>
-
 <script>
-  // ─────────────────────────────────────────
-  // SUPABASE CONFIG
-  // ─────────────────────────────────────────
   const SUPABASE_URL = 'https://emfwqvskigveavmcbqch.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtZndxdnNraWd2ZWF2bWNicWNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MDU0OTMsImV4cCI6MjA5MzQ4MTQ5M30.d66tdO42QpyUYtbPm2hlMKNcfteO3zPs6ix97ADpJ_s';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtZndxdnNraWd2ZWF2bWNicWNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MDU0OTMsImV4cCI6MjA5MzQ4MTQ5M30.d66tdO42QpyUYtbPm2hlMKNcfteO3zPs6ix97ADpJ_s';
 
-  let briefingId = null;
-  let saveTimer  = null;
-  let isDirty    = false;
+  async function insertBriefing(payload) {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/briefings', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err);
+    }
+  }
 
-  // ─────────────────────────────────────────
-  // SCALE SLIDERS
-  // ─────────────────────────────────────────
+  // Scale sliders
   document.querySelectorAll('.scale-track').forEach(track => {
-    const id   = track.dataset.scale;
-    const inp  = document.querySelector(`[data-scale-input="${id}"]`);
+    const id = track.dataset.scale;
+    const input = document.querySelector(`[data-scale-input="${id}"]`);
     const fill = track.querySelector('.scale-fill');
 
     track.addEventListener('click', e => {
       const rect = track.getBoundingClientRect();
-      const pct  = Math.round(((e.clientX - rect.left) / rect.width) * 100);
-      const val  = Math.max(0, Math.min(100, pct));
+      const pct = Math.round(((e.clientX - rect.left) / rect.width) * 100);
+      const val = Math.max(0, Math.min(100, pct));
       fill.style.width = val + '%';
-      inp.value = val;
-      agendarSalvamento();
+      input.value = val;
     });
 
-    inp.addEventListener('input', () => {
-      const val = Math.max(0, Math.min(100, parseInt(inp.value) || 0));
+    input.addEventListener('input', () => {
+      const val = Math.max(0, Math.min(100, parseInt(input.value) || 0));
       fill.style.width = val + '%';
-      agendarSalvamento();
     });
   });
 
-  // ─────────────────────────────────────────
-  // COLETAR TODOS OS DADOS DO FORMULÁRIO
-  // ─────────────────────────────────────────
-  function coletarDados() {
-    const dados = {};
-
-    // Inputs e textareas com data-field
-    document.querySelectorAll('[data-field]').forEach(el => {
-      dados[el.dataset.field] = el.value;
-    });
-
-    // Radio (nível de consciência)
-    const radio = document.querySelector('input[name="nivel"]:checked');
-    dados.nivel_consciencia = radio ? radio.value : '';
-
-    return dados;
-  }
-
-  // ─────────────────────────────────────────
-  // PREENCHER FORMULÁRIO COM DADOS CARREGADOS
-  // ─────────────────────────────────────────
-  function preencherFormulario(dados) {
-    if (!dados) return;
-
-    document.querySelectorAll('[data-field]').forEach(el => {
-      const val = dados[el.dataset.field];
-      if (val !== undefined && val !== null) el.value = val;
-    });
-
-    // Escala — ajustar fills
-    document.querySelectorAll('.scale-input').forEach(inp => {
-      const val  = parseInt(inp.value) || 50;
-      const id   = inp.dataset.scaleInput;
-      const fill = document.querySelector(`[data-scale="${id}"] .scale-fill`);
-      if (fill) fill.style.width = val + '%';
-    });
-
-    // Radio
-    if (dados.nivel_consciencia) {
-      const radio = document.querySelector(`input[name="nivel"][value="${dados.nivel_consciencia}"]`);
-      if (radio) radio.checked = true;
-    }
-  }
-
-  // ─────────────────────────────────────────
-  // STATUS UI
-  // ─────────────────────────────────────────
-  function setStatus(state, msg) {
-    const dot  = document.getElementById('statusDot');
-    const text = document.getElementById('statusText');
-    dot.className  = 'status-dot ' + (state || '');
-    text.textContent = msg;
-  }
-
-  // ─────────────────────────────────────────
-  // LINK
-  // ─────────────────────────────────────────
-  function atualizarLink() {
-    const url  = window.location.href;
-    document.getElementById('linkDisplay').textContent = url;
-  }
-
-  function copiarLink() {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-      showToast('Link copiado! Cole para compartilhar ou retornar.', 'success');
-    });
-  }
-
-  // ─────────────────────────────────────────
-  // SALVAR NO SUPABASE
-  // ─────────────────────────────────────────
-  async function salvar() {
-    if (!briefingId) return;
-    setStatus('saving', 'Salvando...');
-
-    const dados = coletarDados();
-    const nomeProjeto = dados.nome_projeto || '(sem nome)';
-
-    try {
-      // Tenta atualizar primeiro
-      const upd = await fetch(`${SUPABASE_URL}/rest/v1/briefings?id=eq.${briefingId}`, {
-        method: 'PATCH',
-        headers: {
-          'apikey': SUPABASE_KEY,
-          'Authorization': 'Bearer ' + SUPABASE_KEY,
-          'Content-Type': 'application/json',
-          'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify({ nome_projeto: nomeProjeto, dados })
-      });
-
-      if (!upd.ok) throw new Error('patch failed');
-
-      // Se nenhuma linha foi atualizada (id não existe ainda), insere
-      const checkRes = await fetch(`${SUPABASE_URL}/rest/v1/briefings?id=eq.${briefingId}&select=id`, {
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
-      });
-      const rows = await checkRes.json();
-
-      if (!rows || rows.length === 0) {
-        await fetch(`${SUPABASE_URL}/rest/v1/briefings`, {
-          method: 'POST',
-          headers: {
-            'apikey': SUPABASE_KEY,
-            'Authorization': 'Bearer ' + SUPABASE_KEY,
-            'Content-Type': 'application/json',
-            'Prefer': 'return=minimal'
-          },
-          body: JSON.stringify({ id: briefingId, nome_projeto: nomeProjeto, dados })
-        });
-      }
-
-      const agora = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-      setStatus('saved', `Salvo às ${agora}`);
-      isDirty = false;
-
-    } catch (err) {
-      console.error(err);
-      setStatus('error', 'Erro ao salvar. Verifique a conexão.');
-    }
-  }
-
-  async function salvarAgora() {
-    if (saveTimer) clearTimeout(saveTimer);
-    await salvar();
-    showToast('Briefing salvo com sucesso!', 'success');
-  }
-
-  // ─────────────────────────────────────────
-  // AUTO-SAVE (debounce 2s)
-  // ─────────────────────────────────────────
-  function agendarSalvamento() {
-    isDirty = true;
-    setStatus('saving', 'Aguardando...');
-    if (saveTimer) clearTimeout(saveTimer);
-    saveTimer = setTimeout(salvar, 2000);
-  }
-
-  // Ouvir todos os inputs
-  document.addEventListener('input', e => {
-    if (e.target.matches('[data-field], input[name="nivel"]')) agendarSalvamento();
-  });
-  document.addEventListener('change', e => {
-    if (e.target.matches('input[name="nivel"]')) agendarSalvamento();
-  });
-
-  // ─────────────────────────────────────────
-  // CARREGAR BRIEFING EXISTENTE
-  // ─────────────────────────────────────────
-  async function carregarBriefing(id) {
-    setStatus('', 'Carregando...');
-    try {
-      const res  = await fetch(`${SUPABASE_URL}/rest/v1/briefings?id=eq.${id}&select=*`, {
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
-      });
-      const rows = await res.json();
-      if (rows && rows.length > 0) {
-        preencherFormulario(rows[0].dados);
-        const agora = new Date(rows[0].created_at).toLocaleDateString('pt-BR');
-        setStatus('saved', `Briefing carregado — criado em ${agora}`);
-      } else {
-        setStatus('', 'Novo briefing — pronto para preencher');
-      }
-    } catch (err) {
-      setStatus('error', 'Erro ao carregar. Verifique a conexão.');
-    }
-  }
-
-  // ─────────────────────────────────────────
-  // INIT
-  // ─────────────────────────────────────────
-  (async function init() {
-    const params = new URLSearchParams(window.location.search);
-    let id = params.get('id');
-
-    if (!id) {
-      // Gera novo UUID e atualiza URL sem recarregar
-      id = crypto.randomUUID();
-      const novaUrl = window.location.pathname + '?id=' + id;
-      window.history.replaceState({}, '', novaUrl);
-      setStatus('', 'Novo briefing — pronto para preencher');
-    } else {
-      await carregarBriefing(id);
-    }
-
-    briefingId = id;
-    atualizarLink();
-  })();
-
-  // ─────────────────────────────────────────
-  // COPIAR COMO TEXTO
-  // ─────────────────────────────────────────
+  // Copy as text
   function copyAsText() {
     let text = 'BRIEFING COMPLETO — IMPULSO DIGITAL\n';
     text += '=====================================\n\n';
 
     document.querySelectorAll('.section').forEach(section => {
       const tag = section.querySelector('.section-tag');
-      if (tag) text += '\n' + tag.textContent.toUpperCase() + '\n' + '─'.repeat(40) + '\n';
+      if (tag) text += tag.textContent.toUpperCase() + '\n';
 
       section.querySelectorAll('.field').forEach(field => {
         const label = field.querySelector('.field-label');
@@ -693,35 +436,225 @@
       section.querySelectorAll('.obj-table tbody tr').forEach(row => {
         const cells = row.querySelectorAll('input');
         if (cells.length > 0) {
-          const num  = row.querySelector('td:first-child');
+          const num = row.querySelector('td:first-child');
           const vals = Array.from(cells).map(c => c.value || '').filter(v => v);
           if (vals.length > 0) text += (num ? num.textContent + '. ' : '') + vals.join(' | ') + '\n';
         }
       });
 
-      const radio = section.querySelector('input[name="nivel"]:checked');
-      if (radio) {
-        const lbl = radio.closest('.level-option').querySelector('.lo-label');
-        if (lbl) text += 'Nível predominante: ' + lbl.textContent + '\n';
+      const radios = section.querySelectorAll('input[type="radio"]:checked');
+      radios.forEach(r => {
+        const label = r.closest('.level-option').querySelector('.lo-label');
+        if (label) text += 'Nivel predominante: ' + label.textContent + '\n';
+      });
+
+      const scales = section.querySelectorAll('.scale-input');
+      if (scales.length > 0) {
+        scales.forEach(s => {
+          const row = s.closest('.scale-row');
+          const label = row.querySelector('.scale-label');
+          if (label) text += label.textContent + ': ' + s.value + '/100\n';
+        });
       }
 
-      section.querySelectorAll('.scale-row').forEach(row => {
-        const lbl = row.querySelector('.scale-label');
-        const inp = row.querySelector('.scale-input');
-        if (lbl && inp) text += lbl.textContent + ': ' + inp.value + '/100\n';
-      });
+      text += '\n';
     });
 
     navigator.clipboard.writeText(text).then(() => {
-      showToast('Briefing copiado como texto!', 'success');
+      const btn = document.querySelector('.btn-copy');
+      const orig = btn.textContent;
+      btn.textContent = 'Copiado!';
+      btn.style.borderColor = '#7B9E87';
+      btn.style.color = '#7B9E87';
+      setTimeout(() => { btn.textContent = orig; btn.style.borderColor = ''; btn.style.color = ''; }, 2000);
     });
   }
 
-  // ─────────────────────────────────────────
-  // TOAST
-  // ─────────────────────────────────────────
+  function coletarDados() {
+    const dados = {
+      visao_geral: {},
+      publico: {},
+      oferta: {},
+      objecoes: [],
+      concorrentes: [],
+      angulos: {},
+      promessas: {},
+      provas: {},
+      mecanismo: {},
+      nivel_consciencia: null,
+      tom: {},
+      restricoes: {}
+    };
+
+    const sections = document.querySelectorAll('.section');
+
+    // Seção 01 — Visão Geral
+    const s1 = sections[0];
+    const s1inputs = s1.querySelectorAll('.field-input');
+    dados.visao_geral = {
+      nome_projeto: s1inputs[0]?.value || '',
+      o_que_e: s1inputs[1]?.value || '',
+      resultado: s1inputs[2]?.value || '',
+      formato: s1inputs[3]?.value || ''
+    };
+
+    // Seção 02 — Público
+    const s2 = sections[1];
+    const s2inputs = s2.querySelectorAll('.field-input');
+    const s2textareas = s2.querySelectorAll('.field-textarea');
+    dados.publico = {
+      cliente_ideal: s2inputs[0]?.value || '',
+      profissao: s2inputs[1]?.value || '',
+      dor_principal: s2textareas[0]?.value || '',
+      desejo: s2textareas[1]?.value || '',
+      situacao_atual: s2textareas[2]?.value || '',
+      situacao_desejada: s2textareas[3]?.value || ''
+    };
+
+    // Seção 03 — Oferta
+    const s3 = sections[2];
+    const s3inputs = s3.querySelectorAll('.field-input');
+    const s3textarea = s3.querySelector('.field-textarea');
+    dados.oferta = {
+      nome_oferta: s3inputs[0]?.value || '',
+      preco: s3inputs[1]?.value || '',
+      garantia: s3inputs[2]?.value || '',
+      o_que_incluso: s3textarea?.value || '',
+      bonus: s3inputs[3]?.value || ''
+    };
+
+    // Seção 04 — Objeções
+    sections[3].querySelectorAll('tbody tr').forEach(row => {
+      const cells = row.querySelectorAll('input');
+      if (cells.length >= 3) {
+        dados.objecoes.push({
+          objecao: cells[0].value || '',
+          resposta: cells[1].value || '',
+          prova: cells[2].value || ''
+        });
+      }
+    });
+
+    // Seção 05 — Concorrentes
+    sections[4].querySelectorAll('tbody tr').forEach(row => {
+      const cells = row.querySelectorAll('input');
+      if (cells.length >= 4) {
+        dados.concorrentes.push({
+          concorrente: cells[0].value || '',
+          o_que_faz_bem: cells[1].value || '',
+          o_que_falta: cells[2].value || '',
+          diferencial: cells[3].value || ''
+        });
+      }
+    });
+
+    // Seção 06 — Ângulos
+    const s6 = sections[5];
+    const s6inputs = s6.querySelectorAll('.field-input');
+    dados.angulos = {
+      dor: s6inputs[0]?.value || '',
+      desejo: s6inputs[1]?.value || '',
+      prova: s6inputs[2]?.value || '',
+      urgencia: s6inputs[3]?.value || '',
+      curiosidade: s6inputs[4]?.value || ''
+    };
+
+    // Seção 07 — Promessas
+    const s7 = sections[6];
+    const s7textarea = s7.querySelector('.field-textarea');
+    const s7inputs = s7.querySelectorAll('.field-input');
+    dados.promessas = {
+      central: s7textarea?.value || '',
+      sub1: s7inputs[0]?.value || '',
+      sub2: s7inputs[1]?.value || '',
+      sub3: s7inputs[2]?.value || ''
+    };
+
+    // Seção 08 — Provas
+    const s8 = sections[7];
+    const s8textarea = s8.querySelector('.field-textarea');
+    const s8inputs = s8.querySelectorAll('.field-input');
+    dados.provas = {
+      depoimentos: s8textarea?.value || '',
+      resultados_numericos: s8inputs[0]?.value || '',
+      credenciais: s8inputs[1]?.value || ''
+    };
+
+    // Seção 09 — Mecanismo
+    const s9 = sections[8];
+    const s9inputs = s9.querySelectorAll('.field-input');
+    const s9textarea = s9.querySelector('.field-textarea');
+    dados.mecanismo = {
+      nome_metodo: s9inputs[0]?.value || '',
+      por_que_funciona: s9textarea?.value || '',
+      diferencial: s9inputs[1]?.value || ''
+    };
+
+    // Seção 10 — Nível
+    const nivelChecked = document.querySelector('input[name="nivel"]:checked');
+    dados.nivel_consciencia = nivelChecked?.value || null;
+
+    // Seção 11 — Tom
+    const scaleInputs = document.querySelectorAll('.scale-input');
+    const personaInput = sections[10]?.querySelector('.field-input');
+    dados.tom = {
+      formal_casual: parseInt(scaleInputs[0]?.value) || 50,
+      serio_divertido: parseInt(scaleInputs[1]?.value) || 50,
+      tecnico_acessivel: parseInt(scaleInputs[2]?.value) || 50,
+      autoritario_amigavel: parseInt(scaleInputs[3]?.value) || 50,
+      persona: personaInput?.value || ''
+    };
+
+    // Seção 12 — Restrições
+    const s12 = sections[11];
+    const s12inputs = s12.querySelectorAll('.field-input');
+    dados.restricoes = {
+      prazo: s12inputs[0]?.value || '',
+      orcamento: s12inputs[1]?.value || '',
+      canais: s12inputs[2]?.value || '',
+      restricoes_nicho: s12inputs[3]?.value || ''
+    };
+
+    return dados;
+  }
+
+  async function salvarNoSupabase() {
+    const btn = document.getElementById('btn-salvar');
+    btn.textContent = 'Salvando...';
+    btn.disabled = true;
+
+    try {
+      const dados = coletarDados();
+      const nome_projeto = dados.visao_geral.nome_projeto || '[Sem nome]';
+
+      await insertBriefing({ nome_projeto, dados });
+
+      btn.textContent = 'Salvo!';
+      btn.style.background = '#7B9E87';
+      showToast('Briefing salvo com sucesso! Acesse o painel para visualizar.', 'success');
+      setTimeout(() => {
+        btn.textContent = 'Salvar no Supabase';
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 3000);
+    } catch (err) {
+      console.error(err);
+      btn.textContent = 'Erro ao salvar';
+      btn.style.background = '#EF4444';
+      showToast('Erro ao salvar: ' + (err.message || 'tente novamente'), 'error');
+      setTimeout(() => {
+        btn.textContent = 'Salvar no Supabase';
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 3000);
+    }
+  }
+
   function showToast(msg, type) {
-    const toast = document.getElementById('toast');
+    const existing = document.getElementById('toast');
+    if (existing) existing.remove();
+    const toast = document.createElement('div');
+    toast.id = 'toast';
     toast.textContent = msg;
     toast.style.cssText = `
       position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%);
@@ -729,19 +662,11 @@
       color: #fff; padding: 14px 28px; font-family: var(--sans);
       font-size: 0.85rem; font-weight: 500; z-index: 9999;
       border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.4);
-      white-space: nowrap; display: block;
     `;
-    clearTimeout(toast._t);
-    toast._t = setTimeout(() => { toast.style.display = 'none'; }, 4000);
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 4000);
   }
-
-  // Salvar antes de fechar a aba
-  window.addEventListener('beforeunload', e => {
-    if (isDirty) {
-      salvar();
-      e.preventDefault();
-    }
-  });
 </script>
+
 </body>
 </html>
