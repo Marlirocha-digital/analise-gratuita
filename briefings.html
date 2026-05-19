@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Briefings — Impulso Digital</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold:         #C9A84C;
+    --gold-light:   #E8D5A3;
+    --gold-dim:     rgba(201,168,76,0.12);
+    --rose:         #C4837A;
+    --sage:         #7B9E87;
+    --bg:           #0F0D08;
+    --dark:         #1A1610;
+    --mid:          #262016;
+    --warm-gray:    #9A8F7E;
+    --border:       rgba(201,168,76,0.12);
+    --cream:        #FAF7F0;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Layout */
+  .layout { display: flex; min-height: 100vh; }
+
+  /* Sidebar */
+  .sidebar {
+    width: 340px;
+    flex-shrink: 0;
+    background: var(--dark);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+  }
+  .sidebar-header {
+    padding: 24px 24px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .logo-wrap {
+    display: inline-block;
+    background: var(--cream);
+    border-radius: 8px;
+    padding: 8px 14px;
+    margin-bottom: 14px;
+  }
+  .logo-wrap img { height: 36px; display: block; }
+  .sidebar-tag { font-size: 10px; font-weight: 500; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+  .sidebar-title { font-family: var(--serif); font-size: 1.3rem; font-weight: 400; color: var(--cream); }
+  .sidebar-title em { font-style: italic; color: var(--gold); }
+  .sidebar-count { font-size: 0.75rem; color: var(--warm-gray); margin-top: 4px; }
+
+  .search-box {
+    margin: 16px 16px 8px;
+    position: relative;
+  }
+  .search-box input {
+    width: 100%;
+    background: var(--mid);
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    color: var(--cream);
+    outline: none;
+    border-radius: 6px;
+    transition: border-color 0.2s;
+  }
+  .search-box input:focus { border-color: var(--gold); }
+  .search-box input::placeholder { color: rgba(250,247,240,0.25); }
+
+  .briefing-list { overflow-y: auto; flex: 1; padding: 8px; }
+  .briefing-item {
+    padding: 14px 16px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-bottom: 4px;
+  }
+  .briefing-item:hover { background: var(--mid); border-color: var(--border); }
+  .briefing-item.active { background: var(--mid); border-color: var(--gold); }
+  .briefing-item .bi-name { font-size: 0.9rem; font-weight: 500; color: var(--cream); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .briefing-item .bi-date { font-size: 0.72rem; color: var(--warm-gray); }
+  .briefing-item .bi-tag { display: inline-block; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,168,76,0.3); padding: 2px 8px; margin-top: 6px; border-radius: 40px; }
+
+  /* Main */
+  .main { flex: 1; overflow-y: auto; }
+
+  .empty-state {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    height: 100%; min-height: 80vh;
+    text-align: center; padding: 40px;
+  }
+  .empty-state .es-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.3; }
+  .empty-state p { color: var(--warm-gray); font-size: 0.9rem; }
+
+  .detail { max-width: 860px; margin: 0 auto; padding: 48px 40px; }
+  .detail-header { margin-bottom: 40px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+  .detail-tag { font-size: 10px; font-weight: 500; letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+  .detail-title { font-family: var(--serif); font-size: 2rem; font-weight: 400; margin-bottom: 8px; color: var(--cream); }
+  .detail-title em { font-style: italic; color: var(--gold); }
+  .detail-meta { font-size: 0.78rem; color: var(--warm-gray); }
+
+  .detail-actions { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: 10px 24px;
+    font-family: var(--sans); font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    border: none; cursor: pointer; transition: opacity 0.2s; text-decoration: none;
+    border-radius: 6px;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn-primary { background: var(--gold); color: var(--bg); }
+  .btn-outline { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
+  .btn-danger { background: transparent; color: #EF4444; border: 1px solid #EF4444; }
+
+  /* Sections */
+  .section { margin-bottom: 36px; }
+  .section-tag { font-size: 10px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .section h2 { font-family: var(--serif); font-size: 1.2rem; font-weight: 400; margin-bottom: 18px; color: var(--cream); }
+  .section h2 em { font-style: italic; color: var(--gold-light); }
+
+  .divider { width: 100%; height: 1px; background: linear-gradient(90deg, var(--gold), rgba(201,168,76,0.04)); margin: 32px 0; }
+
+  /* Fields display */
+  .field-row { margin-bottom: 14px; }
+  .field-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--warm-gray); margin-bottom: 4px; }
+  .field-value {
+    background: var(--dark);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 0.88rem;
+    color: var(--cream);
+    font-weight: 300;
+    min-height: 42px;
+    white-space: pre-wrap;
+  }
+  .field-value.empty { color: rgba(250,247,240,0.2); font-style: italic; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 600px) { .field-grid { grid-template-columns: 1fr; } }
+
+  /* Table display */
+  .data-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
+  .data-table th { background: var(--mid); padding: 9px 12px; text-align: left; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--warm-gray); }
+  .data-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 0.85rem; font-weight: 300; vertical-align: top; color: var(--cream); }
+  .data-table td:first-child { color: var(--gold); font-weight: 600; width: 32px; text-align: center; }
+  .data-table tr.empty-row td { color: rgba(250,247,240,0.2); font-style: italic; }
+
+  /* Scale display */
+  .scale-display { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .scale-display .sd-label { width: 200px; font-size: 0.82rem; color: rgba(250,247,240,0.7); flex-shrink: 0; }
+  .scale-track { flex: 1; height: 6px; background: var(--mid); border-radius: 3px; }
+  .scale-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 3px; }
+  .scale-val { width: 40px; text-align: right; font-size: 0.78rem; color: var(--warm-gray); }
+
+  /* Badge */
+  .badge {
+    display: inline-block; padding: 6px 16px;
+    font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.4); color: var(--gold);
+    border-radius: 40px;
+  }
+
+  /* Loading */
+  .loading { display: flex; align-items: center; justify-content: center; height: 100vh; }
+  .spinner { width: 32px; height: 32px; border: 2px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 768px) {
+    .layout { flex-direction: column; }
+    .sidebar { width: 100%; height: auto; position: static; }
+    .briefing-list { max-height: 300px; }
+    .detail { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-wrap">
+        <img src="logo-impulso.jpeg" alt="Impulso Digital">
+      </div>
+      <div class="sidebar-tag">Consultoria</div>
+      <div class="sidebar-title">Briefings <em>Recebidos</em></div>
+      <div class="sidebar-count" id="count">Carregando...</div>
+    </div>
+    <div class="search-box">
+      <input type="text" id="search" placeholder="Buscar por nome do projeto..." oninput="filtrar()">
+    </div>
+    <div class="briefing-list" id="list">
+      <div class="loading" style="height:200px"><div class="spinner"></div></div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main" id="main">
+    <div class="empty-state">
+      <div class="es-icon">📋</div>
+      <p>Selecione um briefing na lista para visualizar</p>
+    </div>
+  </main>
+</div>
+
+<script>
+  const SUPABASE_URL = 'https://emfwqvskigveavmcbqch.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtZndxdnNraWd2ZWF2bWNicWNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MDU0OTMsImV4cCI6MjA5MzQ4MTQ5M30.d66tdO42QpyUYtbPm2hlMKNcfteO3zPs6ix97ADpJ_s';
+
+  let todos = [];
+  let filtrados = [];
+  let ativoId = null;
+
+  async function carregar() {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/briefings?select=*&order=created_at.desc', {
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+      }
+    });
+    todos = await res.json();
+    filtrados = todos;
+    renderLista();
+  }
+
+  function filtrar() {
+    const q = document.getElementById('search').value.toLowerCase();
+    filtrados = todos.filter(b => (b.nome_projeto || '').toLowerCase().includes(q));
+    renderLista();
+  }
+
+  function renderLista() {
+    const list = document.getElementById('list');
+    const count = document.getElementById('count');
+
+    const visiveis = filtrados.filter(b => b.nome_projeto !== 'Teste Claude');
+    count.textContent = visiveis.length + ' briefing' + (visiveis.length !== 1 ? 's' : '') + ' recebido' + (visiveis.length !== 1 ? 's' : '');
+
+    if (visiveis.length === 0) {
+      list.innerHTML = '<p style="padding:24px 16px; font-size:0.82rem; color:var(--warm-gray); text-align:center;">Nenhum briefing encontrado.</p>';
+      return;
+    }
+
+    list.innerHTML = visiveis.map(b => {
+      const data = new Date(b.created_at);
+      const formatado = data.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      const nivel = b.dados?.nivel_consciencia;
+      return `<div class="briefing-item ${b.id === ativoId ? 'active' : ''}" onclick="abrirBriefing('${b.id}')">
+        <div class="bi-name">${b.nome_projeto || '(sem nome)'}</div>
+        <div class="bi-date">${formatado}</div>
+        ${nivel ? `<span class="bi-tag">${nivel}</span>` : ''}
+      </div>`;
+    }).join('');
+  }
+
+  function val(v) {
+    if (!v || v.toString().trim() === '') return '<span class="empty">Não preenchido</span>';
+    return v;
+  }
+
+  function campo(label, valor) {
+    const vazio = !valor || valor.toString().trim() === '';
+    return `<div class="field-row">
+      <div class="field-label">${label}</div>
+      <div class="field-value ${vazio ? 'empty' : ''}">${vazio ? 'Não preenchido' : valor}</div>
+    </div>`;
+  }
+
+  function abrirBriefing(id) {
+    ativoId = id;
+    renderLista();
+    const b = todos.find(x => x.id === id);
+    if (!b) return;
+    const d = b.dados || {};
+    const vg = d.visao_geral || {};
+    const pub = d.publico || {};
+    const of = d.oferta || {};
+    const ang = d.angulos || {};
+    const pr = d.promessas || {};
+    const pv = d.provas || {};
+    const mec = d.mecanismo || {};
+    const tom = d.tom || {};
+    const res = d.restricoes || {};
+    const obs = d.objecoes || [];
+    const con = d.concorrentes || [];
+
+    const dataFormatada = new Date(b.created_at).toLocaleDateString('pt-BR', {
+      day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
+
+    const nivelLabels = {
+      inconsciente: 'Inconsciente — Não sabe que tem o problema',
+      problema: 'Consciente do Problema — Sabe que dói, não sabe a solução',
+      solucao: 'Consciente da Solução — Sabe que existe, não conhece a sua',
+      produto: 'Consciente do Produto — Conhece sua oferta, não comprou',
+      mais: 'Mais Consciente — Pronto para comprar'
+    };
+
+    document.getElementById('main').innerHTML = `
+    <div class="detail">
+
+      <div class="detail-header">
+        <div class="detail-tag">Briefing Recebido</div>
+        <div class="detail-title">${b.nome_projeto || '(sem nome)'} <em>completo</em></div>
+        <div class="detail-meta">Enviado em ${dataFormatada}</div>
+        <div class="detail-actions">
+          <button class="btn btn-primary" onclick="copiarJSON('${id}')">Copiar para o Claude</button>
+          <button class="btn btn-outline" onclick="window.print()">Exportar PDF</button>
+          <button class="btn btn-danger" onclick="excluir('${id}')">Excluir</button>
+        </div>
+      </div>
+
+      <!-- 01 Visão Geral -->
+      <div class="section">
+        <div class="section-tag">01 — Visão Geral</div>
+        <h2>Sobre o <em>projeto</em></h2>
+        <div class="field-grid">
+          ${campo('Nome do projeto', vg.nome_projeto)}
+          ${campo('Formato', vg.formato)}
+        </div>
+        ${campo('O que é', vg.o_que_e)}
+        ${campo('Resultado que entrega', vg.resultado)}
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 02 Público -->
+      <div class="section">
+        <div class="section-tag">02 — Público-Alvo</div>
+        <h2>Quem é o <em>cliente ideal</em></h2>
+        <div class="field-grid">
+          ${campo('Cliente ideal', pub.cliente_ideal)}
+          ${campo('Profissão / perfil', pub.profissao)}
+        </div>
+        ${campo('Dor principal', pub.dor_principal)}
+        ${campo('Desejo mais forte', pub.desejo)}
+        <div class="field-grid">
+          ${campo('Situação atual', pub.situacao_atual)}
+          ${campo('Situação desejada', pub.situacao_desejada)}
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 03 Oferta -->
+      <div class="section">
+        <div class="section-tag">03 — Oferta</div>
+        <h2>O que você <em>vende</em></h2>
+        ${campo('Nome da oferta', of.nome_oferta)}
+        <div class="field-grid">
+          ${campo('Preço', of.preco)}
+          ${campo('Garantia', of.garantia)}
+        </div>
+        ${campo('O que está incluso', of.o_que_incluso)}
+        ${campo('Bônus diferencial', of.bonus)}
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 04 Objeções -->
+      <div class="section">
+        <div class="section-tag">04 — Objeções</div>
+        <h2>Por que <em>não</em> comprariam</h2>
+        <table class="data-table">
+          <thead><tr><th>#</th><th>Objeção</th><th>Resposta</th><th>Prova</th></tr></thead>
+          <tbody>
+            ${obs.map((o, i) => {
+              const vazio = !o.objecao && !o.resposta && !o.prova;
+              return `<tr class="${vazio ? 'empty-row' : ''}">
+                <td>${i + 1}</td>
+                <td>${o.objecao || '—'}</td>
+                <td>${o.resposta || '—'}</td>
+                <td>${o.prova || '—'}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 05 Concorrentes -->
+      <div class="section">
+        <div class="section-tag">05 — Concorrentes</div>
+        <h2>Quem mais <em>resolve</em> esse problema</h2>
+        <table class="data-table">
+          <thead><tr><th>#</th><th>Concorrente</th><th>O que faz bem</th><th>O que falta</th><th>Seu diferencial</th></tr></thead>
+          <tbody>
+            ${con.map((c, i) => {
+              const vazio = !c.concorrente;
+              return `<tr class="${vazio ? 'empty-row' : ''}">
+                <td>${i + 1}</td>
+                <td>${c.concorrente || '—'}</td>
+                <td>${c.o_que_faz_bem || '—'}</td>
+                <td>${c.o_que_falta || '—'}</td>
+                <td>${c.diferencial || '—'}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 06 Ângulos -->
+      <div class="section">
+        <div class="section-tag">06 — Ângulos de Campanha</div>
+        <h2>Formas de <em>abordar</em> o público</h2>
+        ${campo('Ângulo de Dor', ang.dor)}
+        ${campo('Ângulo de Desejo', ang.desejo)}
+        ${campo('Ângulo de Prova', ang.prova)}
+        ${campo('Ângulo de Urgência', ang.urgencia)}
+        ${campo('Ângulo de Curiosidade', ang.curiosidade)}
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 07 Promessas -->
+      <div class="section">
+        <div class="section-tag">07 — Promessas</div>
+        <h2>O que você <em>promete</em></h2>
+        ${campo('Promessa central', pr.central)}
+        ${campo('Sub-promessa 1', pr.sub1)}
+        ${campo('Sub-promessa 2', pr.sub2)}
+        ${campo('Sub-promessa 3', pr.sub3)}
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 08 Provas -->
+      <div class="section">
+        <div class="section-tag">08 — Provas</div>
+        <h2>Por que devem <em>acreditar</em></h2>
+        ${campo('Depoimentos de clientes', pv.depoimentos)}
+        ${campo('Resultados numéricos', pv.resultados_numericos)}
+        ${campo('Credenciais do expert', pv.credenciais)}
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 09 Mecanismo -->
+      <div class="section">
+        <div class="section-tag">09 — Mecanismo Único</div>
+        <h2>O método que <em>faz funcionar</em></h2>
+        ${campo('Nome do método', mec.nome_metodo)}
+        ${campo('Por que funciona', mec.por_que_funciona)}
+        ${campo('Diferencial', mec.diferencial)}
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 10 Nível -->
+      <div class="section">
+        <div class="section-tag">10 — Nível de Consciência</div>
+        <h2>Onde o público <em>está</em></h2>
+        ${d.nivel_consciencia
+          ? `<div class="badge">${nivelLabels[d.nivel_consciencia] || d.nivel_consciencia}</div>`
+          : `<div class="field-value empty">Não preenchido</div>`}
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 11 Tom -->
+      <div class="section">
+        <div class="section-tag">11 — Tom de Comunicação</div>
+        <h2>Como a marca <em>fala</em></h2>
+        <div class="scale-display"><span class="sd-label">Formal ↔ Casual</span><div class="scale-track"><div class="scale-fill" style="width:${tom.formal_casual ?? 50}%"></div></div><span class="scale-val">${tom.formal_casual ?? 50}/100</span></div>
+        <div class="scale-display"><span class="sd-label">Sério ↔ Divertido</span><div class="scale-track"><div class="scale-fill" style="width:${tom.serio_divertido ?? 50}%"></div></div><span class="scale-val">${tom.serio_divertido ?? 50}/100</span></div>
+        <div class="scale-display"><span class="sd-label">Técnico ↔ Acessível</span><div class="scale-track"><div class="scale-fill" style="width:${tom.tecnico_acessivel ?? 50}%"></div></div><span class="scale-val">${tom.tecnico_acessivel ?? 50}/100</span></div>
+        <div class="scale-display"><span class="sd-label">Autoritário ↔ Amigável</span><div class="scale-track"><div class="scale-fill" style="width:${tom.autoritario_amigavel ?? 50}%"></div></div><span class="scale-val">${tom.autoritario_amigavel ?? 50}/100</span></div>
+        ${campo('Persona da marca', tom.persona)}
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 12 Restrições -->
+      <div class="section">
+        <div class="section-tag">12 — Restrições e Contexto</div>
+        <h2>Limites e <em>prazos</em></h2>
+        <div class="field-grid">
+          ${campo('Prazo de lançamento', res.prazo)}
+          ${campo('Orçamento', res.orcamento)}
+        </div>
+        ${campo('Canais prioritários', res.canais)}
+        ${campo('Restrições do nicho', res.restricoes_nicho)}
+      </div>
+
+    </div>`;
+  }
+
+  function copiarJSON(id) {
+    const b = todos.find(x => x.id === id);
+    if (!b) return;
+    const texto = `BRIEFING: ${b.nome_projeto}\n\n` + JSON.stringify(b.dados, null, 2);
+    navigator.clipboard.writeText(texto).then(() => {
+      showToast('Briefing copiado! Cole no Claude Code para usar.', 'success');
+    });
+  }
+
+  async function excluir(id) {
+    if (!confirm('Excluir este briefing permanentemente?')) return;
+    await fetch(SUPABASE_URL + '/rest/v1/briefings?id=eq.' + id, {
+      method: 'DELETE',
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+      }
+    });
+    todos = todos.filter(b => b.id !== id);
+    filtrados = filtrados.filter(b => b.id !== id);
+    ativoId = null;
+    renderLista();
+    document.getElementById('main').innerHTML = `<div class="empty-state"><div class="es-icon">📋</div><p>Selecione um briefing na lista para visualizar</p></div>`;
+    showToast('Briefing excluído.', 'success');
+  }
+
+  function showToast(msg, type) {
+    const existing = document.getElementById('toast');
+    if (existing) existing.remove();
+    const toast = document.createElement('div');
+    toast.id = 'toast';
+    toast.textContent = msg;
+    toast.style.cssText = `
+      position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%);
+      background: ${type === 'success' ? '#7B9E87' : '#EF4444'};
+      color: #fff; padding: 14px 28px; font-family: var(--sans);
+      font-size: 0.85rem; font-weight: 500; z-index: 9999;
+      border-radius: 8px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4); white-space: nowrap;
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 4000);
+  }
+
+  carregar();
+</script>
+</body>
+</html>
