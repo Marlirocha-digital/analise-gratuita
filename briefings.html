@@ -97,6 +97,14 @@
   .briefing-item .bi-name { font-size: 0.9rem; font-weight: 500; color: var(--cream); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .briefing-item .bi-date { font-size: 0.72rem; color: var(--warm-gray); }
   .briefing-item .bi-tag { display: inline-block; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,168,76,0.3); padding: 2px 8px; margin-top: 6px; border-radius: 40px; }
+  .briefing-item .bi-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+  .btn-edit-small {
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--gold); background: transparent; border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 4px; padding: 3px 10px; cursor: pointer; transition: all 0.15s;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-edit-small:hover { background: var(--gold-dim); border-color: var(--gold); }
 
   /* Main */
   .main { flex: 1; overflow-y: auto; }
@@ -265,7 +273,10 @@
       return `<div class="briefing-item ${b.id === ativoId ? 'active' : ''}" onclick="abrirBriefing('${b.id}')">
         <div class="bi-name">${b.nome_projeto || '(sem nome)'}</div>
         <div class="bi-date">${formatado}</div>
-        ${nivel ? `<span class="bi-tag">${nivel}</span>` : ''}
+        <div class="bi-footer">
+          ${nivel ? `<span class="bi-tag">${nivel}</span>` : '<span></span>'}
+          <a class="btn-edit-small" href="briefing-template.html?id=${b.id}" target="_blank" onclick="event.stopPropagation()">✏️ Editar</a>
+        </div>
       </div>`;
     }).join('');
   }
@@ -321,7 +332,8 @@
         <div class="detail-title">${b.nome_projeto || '(sem nome)'} <em>completo</em></div>
         <div class="detail-meta">Enviado em ${dataFormatada}</div>
         <div class="detail-actions">
-          <button class="btn btn-primary" onclick="copiarJSON('${id}')">Copiar para o Claude</button>
+          <a class="btn btn-primary" href="briefing-template.html?id=${id}" target="_blank">✏️ Editar Briefing</a>
+          <button class="btn btn-outline" onclick="copiarJSON('${id}')">Copiar para o Claude</button>
           <button class="btn btn-outline" onclick="window.print()">Exportar PDF</button>
           <button class="btn btn-danger" onclick="excluir('${id}')">Excluir</button>
         </div>
